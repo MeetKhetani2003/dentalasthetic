@@ -31,9 +31,9 @@ export async function POST(request: Request) {
       email,
       phone,
       service,
-      preferredDate: payload.preferredDate || null,
-      preferredTime: payload.preferredTime || null,
-      message: payload.message?.trim() || null,
+      preferredDate: payload.preferredDate || undefined,
+      preferredTime: payload.preferredTime || undefined,
+      message: payload.message?.trim() || undefined,
     });
 
     return Response.json({ ok: true, id: appointment._id });
