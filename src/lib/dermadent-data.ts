@@ -53,11 +53,11 @@ export const treatments: Treatment[] = [
     description:
       "A bespoke dermatology programme for acne, texture, pigmentation and age-related change—planned with diagnostics, barrier science and aesthetic restraint.",
     image:
-      "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=1800&q=85",
+      "/treatmentimages/Skinarchitecture.png",
     secondaryImage:
-      "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=1600&q=85",
+      "/treatmentimages/Skinarchitecture.png",
     portraitImage:
-      "https://images.unsplash.com/photo-1616391182219-e080b4d1043a?auto=format&fit=crop&w=1200&q=85",
+      "/treatmentimages/Skinarchitecture.png",
     icon: "◌",
     duration: "45–75 min",
     recovery: "Minimal to 3 days",
@@ -92,11 +92,11 @@ export const treatments: Treatment[] = [
     description:
       "Calibrated laser journeys for melasma, tan, freckles, birthmarks and unwanted hair using parameters selected for safety, clarity and elegance.",
     image:
-      "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=1800&q=85",
+      "/treatmentimages/Leaserpricision.png",
     secondaryImage:
-      "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=1600&q=85",
+      "/treatmentimages/Leaserpricision.png",
     portraitImage:
-      "https://images.unsplash.com/photo-1580281658626-ee379f3cce93?auto=format&fit=crop&w=1200&q=85",
+      "/treatmentimages/Leaserpricision.png",
     icon: "✦",
     duration: "20–60 min",
     recovery: "0–5 days",
@@ -131,11 +131,11 @@ export const treatments: Treatment[] = [
     description:
       "A discreet, data-led hair programme using scalp analysis, regenerative therapies and transplant planning for density that looks quietly natural.",
     image:
-      "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=1800&q=85",
+      "/treatmentimages/hairrestoration.png",
     secondaryImage:
-      "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=1600&q=85",
+      "/treatmentimages/hairrestoration.png",
     portraitImage:
-      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=85",
+      "/treatmentimages/hairrestoration.png",
     icon: "∿",
     duration: "30 min–1 day",
     recovery: "Same day to 7 days",
@@ -170,11 +170,11 @@ export const treatments: Treatment[] = [
     description:
       "Subtle neuromodulator, filler and biostimulator treatments for lift, proportion and freshness—never a frozen or overfilled aesthetic.",
     image:
-      "https://images.unsplash.com/photo-1616391182219-e080b4d1043a?auto=format&fit=crop&w=1800&q=85",
+      "/treatmentimages/facialbalancing.png",
     secondaryImage:
-      "https://images.unsplash.com/photo-1598300188904-6287d52746ad?auto=format&fit=crop&w=1600&q=85",
+      "/treatmentimages/facialbalancing.png",
     portraitImage:
-      "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1200&q=85",
+      "/treatmentimages/facialbalancing.png",
     icon: "⌁",
     duration: "30–50 min",
     recovery: "24–72 hours",
@@ -209,11 +209,11 @@ export const treatments: Treatment[] = [
     description:
       "Cosmetic dentistry, veneers, whitening, aligners and implant planning designed as a fashion-grade smile transformation with medical precision.",
     image:
-      "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=1800&q=85",
+      "/treatmentimages/smiledesign.png",
     secondaryImage:
-      "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1600&q=85",
+      "/treatmentimages/smiledesign.png",
     portraitImage:
-      "https://images.unsplash.com/photo-1588776814546-daab30f310ce?auto=format&fit=crop&w=1200&q=85",
+      "/treatmentimages/smiledesign.png",
     icon: "◇",
     duration: "45 min–2 hrs",
     recovery: "Usually none",

@@ -77,7 +77,7 @@ export function SiteFooter() {
       </div>
       <div className="site-footer__grid">
         <div className="site-footer__brand">
-          <img src="/logo.png" alt="DermaDent Aesthetics Logo" style={{ height: "60px", width: "auto", marginBottom: "1rem" }} />
+          <img src="/logo.png" alt="DermaDent Aesthetics Logo" style={{ height: "60px", width: "auto", marginBottom: "1rem", filter: "brightness(0) invert(1)" }} />
           <h2>DermaDent Aesthetics</h2>
           <p>{clinic.tagline}. A calmer standard of clinically exacting beauty in India.</p>
           <form className="newsletter-form">
