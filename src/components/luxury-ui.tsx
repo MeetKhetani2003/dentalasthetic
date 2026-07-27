@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { awards, clinic, navLinks, treatments } from "@/lib/dermadent-data";
+import { awards, clinic as defaultClinic, navLinks, treatments as defaultTreatments, Treatment as TreatmentType } from "@/lib/dermadent-data";
 
 export function Eyebrow({ children }: { children: ReactNode }) {
   return <p className="eyebrow" data-reveal>{children}</p>;
@@ -32,8 +35,9 @@ export function SplitImageComposition({
   );
 }
 
-export function TreatmentRibbon({ limit }: { limit?: number }) {
-  const visibleTreatments = typeof limit === "number" ? treatments.slice(0, limit) : treatments;
+export function TreatmentRibbon({ treatments, limit }: { treatments?: TreatmentType[]; limit?: number }) {
+  const list = treatments && treatments.length > 0 ? treatments : defaultTreatments;
+  const visibleTreatments = typeof limit === "number" ? list.slice(0, limit) : list;
 
   return (
     <div className="grid-layout">
@@ -69,7 +73,14 @@ export function AppointmentBanner({ compact = false }: { compact?: boolean }) {
   );
 }
 
-export function SiteFooter() {
+export function SiteFooter({ clinic, popularTreatments }: { clinic?: any; popularTreatments?: TreatmentType[] }) {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+  const info = clinic || defaultClinic;
+  const list = popularTreatments && popularTreatments.length > 0 ? popularTreatments : defaultTreatments;
+
   return (
     <footer className="site-footer">
       <div className="site-footer__marquee" aria-hidden="true">
@@ -78,8 +89,8 @@ export function SiteFooter() {
       <div className="site-footer__grid">
         <div className="site-footer__brand">
           <img src="/logo.png" alt="DermaDent Aesthetics Logo" style={{ height: "60px", width: "auto", marginBottom: "1rem", filter: "brightness(0) invert(1)" }} />
-          <h2>DermaDent Aesthetics</h2>
-          <p>{clinic.tagline}. A calmer standard of clinically exacting beauty in India.</p>
+          <h2>{info.name || "DermaDent Aesthetics"}</h2>
+          <p>{info.tagline}. A calmer standard of clinically exacting beauty in India.</p>
           <form className="newsletter-form">
             <label htmlFor="newsletter">Private notes from the atelier</label>
             <div>
@@ -95,30 +106,31 @@ export function SiteFooter() {
             <Link key={link.href} href={link.href}>{link.label}</Link>
           ))}
           <Link href="/appointment">Book Appointment</Link>
+          <Link href="/admin" style={{ color: "var(--gold)", fontWeight: "bold" }}>Admin Panel ⚙️</Link>
         </div>
 
         <div>
           <h3>Popular Treatments</h3>
-          {treatments.slice(0, 5).map((treatment) => (
+          {list.slice(0, 5).map((treatment) => (
             <Link key={treatment.slug} href={`/treatments/${treatment.slug}`}>{treatment.shortTitle}</Link>
           ))}
         </div>
 
         <div>
           <h3>Visit</h3>
-          <p>{clinic.address}</p>
-          <p>{clinic.hours}</p>
-          <p>{clinic.phone}<br />{clinic.email}</p>
+          <p>{info.address}</p>
+          <p>{info.hours}</p>
+          <p>{info.phone}<br />{info.email}</p>
           <div className="award-strip">
             {awards.map((award) => <span key={award}>{award}</span>)}
           </div>
         </div>
       </div>
-      <div className="map-panel" role="img" aria-label={clinic.mapLabel}>
-        <span>{clinic.mapLabel}</span>
+      <div className="map-panel" role="img" aria-label={info.mapLabel}>
+        <span>{info.mapLabel}</span>
       </div>
       <div className="site-footer__bottom">
-        <span>© {new Date().getFullYear()} DermaDent Aesthetics</span>
+        <span>© {new Date().getFullYear()} {info.name}</span>
         <span>Designed for calm precision and premium care.</span>
       </div>
     </footer>

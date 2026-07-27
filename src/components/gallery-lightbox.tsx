@@ -1,18 +1,32 @@
 "use client";
 
-import { useState } from "react";
-import { gallery } from "@/lib/dermadent-data";
+import { useEffect, useState } from "react";
+import { gallery as defaultGallery } from "@/lib/dermadent-data";
 
-export function GalleryLightbox() {
-  const [active, setActive] = useState<(typeof gallery)[number] | null>(null);
+export function GalleryLightbox({ items }: { items?: any[] }) {
+  const [galleryItems, setGalleryItems] = useState<any[]>(items || defaultGallery);
+  const [active, setActive] = useState<any | null>(null);
+
+  useEffect(() => {
+    if (!items) {
+      fetch("/api/admin/gallery")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.length > 0) setGalleryItems(data);
+        })
+        .catch(() => {});
+    } else {
+      setGalleryItems(items);
+    }
+  }, [items]);
 
   return (
     <>
       <div className="masonry-gallery">
-        {gallery.map((item, index) => (
+        {galleryItems.map((item, index) => (
           <button
-            key={item.src}
-            className={`masonry-gallery__item masonry-gallery__item--${item.size}`}
+            key={item.src + index}
+            className={`masonry-gallery__item masonry-gallery__item--${item.size || "regular"}`}
             onClick={() => setActive(item)}
             data-reveal
             style={{ transitionDelay: `${index * 40}ms` }}

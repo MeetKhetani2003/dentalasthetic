@@ -13,6 +13,17 @@ type AppointmentPayload = {
   message?: string;
 };
 
+export async function GET() {
+  try {
+    await connectDB();
+    const items = await Appointment.find().sort({ createdAt: -1 }).lean();
+    return Response.json({ ok: true, data: items });
+  } catch (error) {
+    console.error(error);
+    return Response.json({ ok: false, error: "Unable to fetch appointments" }, { status: 500 });
+  }
+}
+
 export async function POST(request: Request) {
   try {
     await connectDB();
@@ -42,3 +53,4 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: "Unable to create appointment" }, { status: 500 });
   }
 }
+

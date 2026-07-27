@@ -1,26 +1,35 @@
 import Link from "next/link";
 import { AppointmentBanner, Eyebrow, LuxuryButton, TreatmentRibbon } from "@/components/luxury-ui";
-import { doctor, testimonials, treatments, transformations } from "@/lib/dermadent-data";
+import { TestimonialCarousel } from "@/components/testimonial-carousel";
+import { getDoctor, getHomeContent, getTestimonials, getTransformations, getTreatments } from "@/lib/cms";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
+  const [homeContent, doctor, treatments, transformations, testimonials] = await Promise.all([
+    getHomeContent(),
+    getDoctor(),
+    getTreatments(),
+    getTransformations(),
+    getTestimonials(),
+  ]);
+
   return (
     <main>
       <section className="hero-cinema" aria-label="DermaDent Aesthetics luxury clinic hero">
         <div className="hero-cinema__image" data-parallax="9" />
         <div className="hero-cinema__content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '2rem' }}>
           <div className="hero-cinema__copy" style={{ margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <p className="eyebrow hero-kicker">India’s premium medical atelier</p>
+            <p className="eyebrow hero-kicker">{homeContent.heroKicker}</p>
             <h1 style={{ fontSize: '3rem', maxWidth: '800px' }}>
-              Skin, smile and hair refinement for those who prefer quality perfection.
+              {homeContent.heroTitle}
             </h1>
             <p style={{ maxWidth: '600px', fontSize: '1.2rem', color: 'rgba(255,255,255,0.9)' }}>
-              DermaDent Aesthetics blends dermatology, lasers, regenerative hair care and dental design into a calm, deeply personal beauty experience.
+              {homeContent.heroSubheading}
             </p>
             <div className="hero-actions" style={{ justifyContent: 'center' }}>
-              <LuxuryButton href="/appointment" variant="gold">Book consultation</LuxuryButton>
-              <LuxuryButton href="/treatments" variant="light">Explore treatments</LuxuryButton>
+              <LuxuryButton href={homeContent.primaryBtnLink || "/appointment"} variant="gold">{homeContent.primaryBtnText || "Book consultation"}</LuxuryButton>
+              <LuxuryButton href={homeContent.secondaryBtnLink || "/treatments"} variant="light">{homeContent.secondaryBtnText || "Explore treatments"}</LuxuryButton>
             </div>
           </div>
         </div>
@@ -28,42 +37,36 @@ export default async function HomePage() {
 
       <section className="section-pad" style={{ background: 'var(--white)' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-          <Eyebrow>Luxury introduction</Eyebrow>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>A private atelier for clinically precise beauty.</h2>
+          <Eyebrow>{homeContent.introEyebrow}</Eyebrow>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>{homeContent.introHeading}</h2>
           <p style={{ color: 'var(--muted)', fontSize: '1.1rem' }}>
-            We designed DermaDent to feel like entering a serene residence. Every treatment is tailored for Indian skin, facial harmony and long-term confidence.
+            {homeContent.introDescription}
           </p>
         </div>
       </section>
 
       <section className="section-pad" style={{ background: 'var(--ivory)' }}>
         <div className="section-heading">
-          <Eyebrow>Clinic philosophy</Eyebrow>
-          <h2 style={{ fontSize: '2.5rem' }}>Beauty should be almost imperceptible.</h2>
+          <Eyebrow>{homeContent.philosophyEyebrow}</Eyebrow>
+          <h2 style={{ fontSize: '2.5rem' }}>{homeContent.philosophyHeading}</h2>
         </div>
         <div className="grid-layout">
-          <div className="card">
-            <h3>Barrier-first dermatology</h3>
-            <p>Our philosophy is conservative, diagnostic and aesthetic. We study skin behaviour before creating a protocol.</p>
-          </div>
-          <div className="card">
-            <h3>Facial architecture mapping</h3>
-            <p>We analyze facial proportion and structural balance for subtle, harmonious results.</p>
-          </div>
-          <div className="card">
-            <h3>Laser parameters for Indian skin</h3>
-            <p>Advanced laser technology specifically calibrated for safety and efficacy on melanin-rich skin.</p>
-          </div>
+          {homeContent.philosophyCards?.map((card: any, idx: number) => (
+            <div key={card.title || idx} className="card">
+              <h3>{card.title}</h3>
+              <p>{card.description}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       <section className="section-pad">
         <div className="section-heading text-center">
-          <Eyebrow>Featured treatments</Eyebrow>
-          <h2 style={{ fontSize: '2.5rem' }}>Standardized Excellence</h2>
-          <p>Each protocol is designed as a complete journey.</p>
+          <Eyebrow>{homeContent.featuredEyebrow}</Eyebrow>
+          <h2 style={{ fontSize: '2.5rem' }}>{homeContent.featuredHeading}</h2>
+          <p>{homeContent.featuredSubheading}</p>
         </div>
-        <TreatmentRibbon limit={4} />
+        <TreatmentRibbon treatments={treatments} limit={4} />
       </section>
 
       <section className="section-pad" style={{ background: 'var(--teal-deep)', color: 'white' }}>
@@ -86,7 +89,7 @@ export default async function HomePage() {
           <h2 style={{ fontSize: '2.5rem' }}>Real Results</h2>
         </div>
         <div className="grid-layout">
-          {transformations.map((story, index) => (
+          {transformations.map((story: any) => (
             <Link key={story.title} href="/before-after" className="card" data-reveal>
               <img src={story.after} alt={story.title} />
               <div style={{ marginTop: '1rem' }}>
@@ -100,28 +103,14 @@ export default async function HomePage() {
       </section>
 
       <section className="section-pad" style={{ background: 'var(--ivory)' }}>
-        <div className="section-heading">
-          <Eyebrow>Testimonials</Eyebrow>
-          <h2 style={{ fontSize: '2.5rem' }}>Patient Stories</h2>
+        <div className="section-heading text-center" style={{ marginBottom: '2.5rem' }}>
+          <Eyebrow>Google Verified Reviews</Eyebrow>
+          <h2 style={{ fontSize: '2.5rem' }}>Patient Stories & Experiences</h2>
         </div>
-        <div className="grid-layout">
-          {testimonials.map((testimonial, index) => (
-            <article key={testimonial.name} className="card" data-reveal>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                <img src={testimonial.portrait} alt={testimonial.name} style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }} />
-                <div>
-                  <strong style={{ display: 'block', fontSize: '1.2rem' }}>{testimonial.name}</strong>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--gold)' }}>{testimonial.rating}</span>
-                </div>
-              </div>
-              <p style={{ fontStyle: 'italic', flexGrow: 1 }}>"{testimonial.quote}"</p>
-            </article>
-          ))}
-        </div>
+        <TestimonialCarousel testimonials={testimonials} />
       </section>
 
       <AppointmentBanner />
     </main>
   );
 }
-

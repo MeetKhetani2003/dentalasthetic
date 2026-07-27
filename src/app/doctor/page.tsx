@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
 import { AppointmentBanner, Eyebrow, LuxuryButton } from "@/components/luxury-ui";
-import { doctor } from "@/lib/dermadent-data";
+import { getDoctor } from "@/lib/cms";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Meet Dr. Aarya Mehta",
-  description: "Editorial profile of Dr. Aarya Mehta, founder and aesthetic design director of DermaDent Aesthetics.",
+  title: "Meet the Expert Doctor",
+  description: "Editorial profile of our founder and aesthetic design director at DermaDent Aesthetics.",
 };
 
-export default function DoctorPage() {
+export default async function DoctorPage() {
+  const doctor = await getDoctor();
+
   return (
     <main>
       <section className="doctor-editorial-hero">
@@ -39,12 +43,12 @@ export default function DoctorPage() {
           <Eyebrow>Certificates</Eyebrow>
           <h2>Internationally informed. India-specific in practice.</h2>
           <ul>
-            {doctor.credentials.map((credential) => <li key={credential}>{credential}</li>)}
+            {doctor.credentials?.map((credential: string) => <li key={credential}>{credential}</li>)}
           </ul>
         </div>
         <div className="credentials-atelier__awards" data-reveal>
           <Eyebrow>Achievements & awards</Eyebrow>
-          {doctor.achievements.map((achievement, index) => (
+          {doctor.achievements?.map((achievement: string, index: number) => (
             <article key={achievement}>
               <span>0{index + 1}</span>
               <p>{achievement}</p>
@@ -57,10 +61,10 @@ export default function DoctorPage() {
         <div className="timeline-sticky" data-reveal>
           <Eyebrow>Research timeline</Eyebrow>
           <h2>From pigment science to integrated aesthetic design.</h2>
-          <LuxuryButton href="/appointment" variant="gold">Consult with Dr. Mehta</LuxuryButton>
+          <LuxuryButton href="/appointment" variant="gold">Consult with {doctor.name}</LuxuryButton>
         </div>
         <div className="timeline-steps timeline-steps--large">
-          {doctor.timeline.map((item) => (
+          {doctor.timeline?.map((item: any) => (
             <article key={item.year} data-reveal>
               <span>{item.year}</span>
               <p>{item.detail}</p>

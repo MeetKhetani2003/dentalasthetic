@@ -19,6 +19,10 @@ export function SiteHeader() {
 
   useEffect(() => setOpen(false), [pathname]);
 
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <header className={`site-header ${scrolled ? "site-header--scrolled" : ""}`}>
       <Link href="/" className="brand-mark" aria-label="DermaDent Aesthetics home">

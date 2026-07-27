@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
 import { AppointmentBanner, Eyebrow, TreatmentRibbon } from "@/components/luxury-ui";
-import { treatments } from "@/lib/dermadent-data";
+import { getTreatments } from "@/lib/cms";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Treatments",
   description: "Explore DermaDent Aesthetics' luxury dermatology, laser, hair restoration and dental treatment protocols.",
 };
 
-export default function TreatmentsPage() {
+export default async function TreatmentsPage() {
+  const treatments = await getTreatments();
+
   return (
     <main>
       <section className="page-hero page-hero--treatments">
@@ -35,7 +39,7 @@ export default function TreatmentsPage() {
       </section>
 
       <section className="treatments-catalogue section-pad">
-        <TreatmentRibbon />
+        <TreatmentRibbon treatments={treatments} />
       </section>
 
       <section className="treatment-index section-pad" aria-label="Treatment quick index">
@@ -49,7 +53,7 @@ export default function TreatmentsPage() {
         <div className="concern-map">
           {treatments.map((treatment) => (
             <a key={treatment.slug} href={`/treatments/${treatment.slug}`} data-reveal>
-              <span>{treatment.icon}</span>
+              <span>{treatment.icon || "✦"}</span>
               <strong>{treatment.focus}</strong>
               <em>{treatment.duration} · {treatment.recovery}</em>
             </a>

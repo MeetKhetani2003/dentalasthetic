@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
 import { BeforeAfterSlider } from "@/components/before-after-slider";
 import { AppointmentBanner, Eyebrow } from "@/components/luxury-ui";
-import { transformations } from "@/lib/dermadent-data";
+import { getTransformations } from "@/lib/cms";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Before & After Transformations",
   description: "Interactive DermaDent Aesthetics transformation stories with timelines, highlights and before-after comparisons.",
 };
 
-export default function BeforeAfterPage() {
+export default async function BeforeAfterPage() {
+  const transformations = await getTransformations();
+
   return (
     <main>
       <section className="page-hero page-hero--transformations">
@@ -22,8 +26,8 @@ export default function BeforeAfterPage() {
       </section>
 
       <section className="transformation-stories section-pad">
-        {transformations.map((story, index) => (
-          <article key={story.title} className={`transformation-story transformation-story--${index % 2 === 0 ? "left" : "right"}`}>
+        {transformations.map((story: any, index: number) => (
+          <article key={story.title || index} className={`transformation-story transformation-story--${index % 2 === 0 ? "left" : "right"}`}>
             <BeforeAfterSlider before={story.before} after={story.after} title={story.title} />
             <div className="transformation-story__copy" data-reveal>
               <Eyebrow>{story.concern}</Eyebrow>
