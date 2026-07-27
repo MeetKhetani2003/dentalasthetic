@@ -98,6 +98,14 @@ function ImageUploader({
 }
 
 export default function AdminPage() {
+  // Auth State
+  const [authenticated, setAuthenticated] = useState<boolean | null>(null);
+  const [loginUsername, setLoginUsername] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [loggingIn, setLoggingIn] = useState(false);
+
+  // App State
   const [activeTab, setActiveTab] = useState<
     "home" | "treatments" | "doctor" | "transformations" | "testimonials" | "gallery" | "clinic" | "appointments"
   >("home");
@@ -121,8 +129,50 @@ export default function AdminPage() {
   const [editingGallery, setEditingGallery] = useState<any | null>(null);
 
   useEffect(() => {
-    fetchAll();
+    checkAuth();
   }, []);
+
+  const checkAuth = async () => {
+    try {
+      const res = await fetch("/api/admin/check-auth").then((r) => r.json());
+      setAuthenticated(res.authenticated);
+      if (res.authenticated) {
+        fetchAll();
+      }
+    } catch {
+      setAuthenticated(false);
+    }
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError(null);
+    setLoggingIn(true);
+
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: loginUsername, password: loginPassword }),
+      }).then((r) => r.json());
+
+      if (res.success) {
+        setAuthenticated(true);
+        fetchAll();
+      } else {
+        setLoginError(res.error || "Invalid credentials");
+      }
+    } catch {
+      setLoginError("Login failed. Please try again.");
+    } finally {
+      setLoggingIn(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    await fetch("/api/admin/logout", { method: "POST" });
+    setAuthenticated(false);
+  };
 
   const fetchAll = async () => {
     setLoading(true);
@@ -169,7 +219,7 @@ export default function AdminPage() {
       } else {
         alert("Seed failed: " + res.error);
       }
-    } catch (e) {
+    } catch {
       alert("Error seeding data.");
     } finally {
       setLoading(false);
@@ -369,6 +419,91 @@ export default function AdminPage() {
     }
   };
 
+  // Loading Initial Auth Check State
+  if (authenticated === null) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#0b1319", display: "flex", justifyContent: "center", alignItems: "center", color: "#c5a059", fontFamily: "sans-serif" }}>
+        Checking security credentials...
+      </div>
+    );
+  }
+
+  // --- UNAUTHENTICATED: RENDER LUXURY LOCK SCREEN ---
+  if (!authenticated) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#080e13", display: "flex", justifyContent: "center", alignItems: "center", padding: "1rem", fontFamily: "sans-serif" }}>
+        <div style={{ width: "100%", maxWidth: "420px", background: "#111c24", border: "1px solid #c5a059", borderRadius: "12px", padding: "2.5rem", boxShadow: "0 20px 50px rgba(0,0,0,0.5)" }}>
+          <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+            <span style={{ fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "3px", color: "#c5a059" }}>
+              DermaDent Atelier
+            </span>
+            <h1 style={{ fontSize: "1.8rem", fontWeight: 300, color: "#fff", margin: "0.4rem 0 0" }}>
+              Admin Console Lock
+            </h1>
+            <p style={{ fontSize: "0.85rem", color: "#a0aab2", marginTop: "0.4rem" }}>
+              Enter env-configured credentials to manage website content.
+            </p>
+          </div>
+
+          {loginError && (
+            <div style={{ background: "#3b1717", border: "1px solid #ff4d4d", color: "#ff8080", padding: "0.8rem", borderRadius: "6px", marginBottom: "1.5rem", fontSize: "0.85rem", textAlign: "center" }}>
+              ⚠️ {loginError}
+            </div>
+          )}
+
+          <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
+            <div>
+              <label style={{ display: "block", fontSize: "0.85rem", color: "#c5a059", marginBottom: "0.4rem" }}>
+                Username
+              </label>
+              <input
+                type="text"
+                required
+                value={loginUsername}
+                onChange={(e) => setLoginUsername(e.target.value)}
+                placeholder="Admin username"
+                style={{ width: "100%", padding: "0.8rem", background: "#0b1319", border: "1px solid rgba(255,255,255,0.15)", color: "#fff", borderRadius: "6px" }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: "block", fontSize: "0.85rem", color: "#c5a059", marginBottom: "0.4rem" }}>
+                Password
+              </label>
+              <input
+                type="password"
+                required
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
+                placeholder="Admin password"
+                style={{ width: "100%", padding: "0.8rem", background: "#0b1319", border: "1px solid rgba(255,255,255,0.15)", color: "#fff", borderRadius: "6px" }}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loggingIn}
+              style={{
+                marginTop: "0.5rem",
+                background: loggingIn ? "#555" : "#c5a059",
+                color: "#0b1319",
+                border: "none",
+                padding: "0.9rem",
+                borderRadius: "6px",
+                fontWeight: "bold",
+                fontSize: "1rem",
+                cursor: loggingIn ? "not-allowed" : "pointer",
+                transition: "all 0.2s ease",
+              }}
+            >
+              {loggingIn ? "Verifying..." : "Unlock Console 🔓"}
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   const menuItems = [
     { id: "home", icon: "🏠", label: "Home Page Sections" },
     { id: "treatments", icon: "✨", label: "Treatments Library", count: treatmentsData.length },
@@ -380,6 +515,7 @@ export default function AdminPage() {
     { id: "appointments", icon: "📅", label: "Bookings", count: appointmentsData.length },
   ];
 
+  // --- AUTHENTICATED: RENDER FULL ADMIN CONSOLE ---
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "#0b1319", color: "#f7f5f0", fontFamily: "sans-serif" }}>
       {/* --- SIDEBAR NAVIGATION --- */}
@@ -484,6 +620,21 @@ export default function AdminPage() {
           >
             👁️ View Live Website ↗
           </a>
+          <button
+            onClick={handleLogout}
+            style={{
+              background: "rgba(255,0,0,0.15)",
+              border: "1px solid #ff4d4d",
+              color: "#ff8080",
+              padding: "0.6rem",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "0.85rem",
+              fontWeight: "bold",
+            }}
+          >
+            🚪 Logout
+          </button>
         </div>
       </aside>
 
@@ -530,6 +681,13 @@ export default function AdminPage() {
                   value={homeData.heroSubheading || ""}
                   onChange={(e) => setHomeData({ ...homeData, heroSubheading: e.target.value })}
                   style={{ width: "100%", padding: "0.8rem", background: "#0b1319", border: "1px solid rgba(255,255,255,0.15)", color: "#fff", borderRadius: "4px" }}
+                />
+              </div>
+              <div style={{ gridColumn: "span 2" }}>
+                <ImageUploader
+                  label="Hero Background Image (GridFS Supported)"
+                  value={homeData.heroImage || ""}
+                  onChange={(url) => setHomeData({ ...homeData, heroImage: url })}
                 />
               </div>
             </div>

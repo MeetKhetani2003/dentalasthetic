@@ -14,20 +14,34 @@ export default async function HomePage() {
     getTestimonials(),
   ]);
 
+  const defaultHeroBg = "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=2000&q=85";
+  const heroBgImage = homeContent.heroImage || defaultHeroBg;
+
   return (
     <main>
-      <section className="hero-cinema" aria-label="DermaDent Aesthetics luxury clinic hero">
-        <div className="hero-cinema__image" data-parallax="9" />
-        <div className="hero-cinema__content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '2rem' }}>
+      <section className="hero-cinema" aria-label="DermaDent Aesthetics luxury clinic hero" style={{ position: "relative", minHeight: "85vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+        <div
+          className="hero-cinema__image"
+          data-parallax="9"
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.65)), url("${heroBgImage}")`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            zIndex: 1,
+          }}
+        />
+        <div className="hero-cinema__content" style={{ position: "relative", zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '2rem', padding: '4rem 1rem' }}>
           <div className="hero-cinema__copy" style={{ margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <p className="eyebrow hero-kicker">{homeContent.heroKicker}</p>
-            <h1 style={{ fontSize: '3rem', maxWidth: '800px' }}>
+            <p className="eyebrow hero-kicker" style={{ color: "#c5a059" }}>{homeContent.heroKicker}</p>
+            <h1 style={{ fontSize: '3rem', maxWidth: '800px', color: '#fff' }}>
               {homeContent.heroTitle}
             </h1>
             <p style={{ maxWidth: '600px', fontSize: '1.2rem', color: 'rgba(255,255,255,0.9)' }}>
               {homeContent.heroSubheading}
             </p>
-            <div className="hero-actions" style={{ justifyContent: 'center' }}>
+            <div className="hero-actions" style={{ justifyContent: 'center', display: 'flex', gap: '1rem', marginTop: '1rem' }}>
               <LuxuryButton href={homeContent.primaryBtnLink || "/appointment"} variant="gold">{homeContent.primaryBtnText || "Book consultation"}</LuxuryButton>
               <LuxuryButton href={homeContent.secondaryBtnLink || "/treatments"} variant="light">{homeContent.secondaryBtnText || "Explore treatments"}</LuxuryButton>
             </div>

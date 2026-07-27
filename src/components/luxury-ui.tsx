@@ -106,7 +106,6 @@ export function SiteFooter({ clinic, popularTreatments }: { clinic?: any; popula
             <Link key={link.href} href={link.href}>{link.label}</Link>
           ))}
           <Link href="/appointment">Book Appointment</Link>
-          <Link href="/admin" style={{ color: "var(--gold)", fontWeight: "bold" }}>Admin Panel ⚙️</Link>
         </div>
 
         <div>
