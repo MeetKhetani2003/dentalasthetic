@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/db";
 import { Doctor } from "@/db/schema";
-import { getDoctor } from "@/lib/cms";
+import { getDoctors } from "@/lib/cms";
 
 export async function GET() {
-  const doctor = await getDoctor();
+  const doctors = await getDoctors();
+  const doctor = doctors.length > 0 ? doctors[0] : null;
   return NextResponse.json(doctor);
 }
 
