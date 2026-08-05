@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { AppointmentBanner, Eyebrow, LuxuryButton, TreatmentRibbon } from "@/components/luxury-ui";
 import { TestimonialCarousel } from "@/components/testimonial-carousel";
-import { getDoctor, getHomeContent, getTestimonials, getTransformations, getTreatments } from "@/lib/cms";
+import { getDoctors, getHomeContent, getTestimonials, getTransformations, getTreatments } from "@/lib/cms";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [homeContent, doctor, treatments, transformations, testimonials] = await Promise.all([
+  const [homeContent, doctors, treatments, transformations, testimonials] = await Promise.all([
     getHomeContent(),
-    getDoctor(),
+    getDoctors(),
     getTreatments(),
     getTransformations(),
     getTestimonials(),
@@ -85,14 +85,14 @@ export default async function HomePage() {
 
       <section className="section-pad" style={{ background: 'var(--teal-deep)', color: 'white' }}>
         <div className="grid-layout" style={{ alignItems: 'center' }}>
-          <div>
-            <img src={doctor.portrait} alt={doctor.name} style={{ borderRadius: '1rem', width: '100%', objectFit: 'cover' }} />
+          <div className="doctor-glimpse__portrait" data-parallax="6">
+            <img src={doctors[0].portrait} alt={doctors[0].name} style={{ borderRadius: '1rem', width: '100%', objectFit: 'cover' }} />
           </div>
-          <div>
-            <Eyebrow>Meet the expert</Eyebrow>
-            <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>{doctor.name}</h2>
-            <p style={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.8)', marginBottom: '1.5rem' }}>{doctor.biography}</p>
-            <LuxuryButton href="/doctor" variant="gold">Read profile</LuxuryButton>
+          <div className="doctor-glimpse__copy">
+            <Eyebrow>The expert</Eyebrow>
+            <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>{doctors[0].name}</h2>
+            <p style={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.8)', marginBottom: '1.5rem' }}>{doctors[0].biography}</p>
+            <LuxuryButton href="/doctor" variant="gold">Read profiles</LuxuryButton>
           </div>
         </div>
       </section>

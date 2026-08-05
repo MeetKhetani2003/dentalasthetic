@@ -281,32 +281,54 @@ export const treatments: Treatment[] = [
   },
 ];
 
-export const doctor = {
-  name: "Dr. Aarya Mehta",
-  title: "Founder, Dermatologic & Aesthetic Design Director",
-  portrait: "/dr.png",
-  signature: "Aarya Mehta",
-  biography:
-    "Dr. Aarya Mehta founded DermaDent Aesthetics as an atelier for clinically precise, visually restrained beauty. Her work combines dermatology, facial design, lasers, hair restoration and smile aesthetics into quiet transformations that respect identity.",
-  credentials: [
-    "MD Dermatology · Fellowship in Aesthetic Lasers",
-    "International training in facial anatomy and injectables",
-    "Advanced certification in trichology-led hair restoration",
-    "Clinical collaborator for smile-led facial aesthetics",
-  ],
-  achievements: [
-    "35,000+ patient journeys supervised",
-    "Faculty speaker for aesthetic dermatology forums",
-    "Published protocols for pigment-safe laser planning",
-    "Awarded for patient experience and ethical aesthetic care",
-  ],
-  timeline: [
-    { year: "2008", detail: "Medical dermatology residency and research in pigment disorders." },
-    { year: "2012", detail: "Laser fellowship with focus on Indian skin safety." },
-    { year: "2017", detail: "Integrated facial aesthetics, hair and smile design into practice." },
-    { year: "2024", detail: "Launched DermaDent’s luxury medical atelier concept." },
-  ],
-};
+export const doctors = [
+  {
+    name: "Dr. Aarya Mehta",
+    title: "Founder, Dermatologic & Aesthetic Design Director",
+    portrait: "/dr.png",
+    signature: "Aarya Mehta",
+    biography:
+      "Dr. Aarya Mehta founded DermaDent Aesthetics as an atelier for clinically precise, visually restrained beauty. Her work combines dermatology, facial design, lasers, hair restoration and smile aesthetics into quiet transformations that respect identity.",
+    credentials: [
+      "MD Dermatology · Fellowship in Aesthetic Lasers",
+      "International training in facial anatomy and injectables",
+      "Advanced certification in trichology-led hair restoration",
+      "Clinical collaborator for smile-led facial aesthetics",
+    ],
+    achievements: [
+      "35,000+ patient journeys supervised",
+      "Faculty speaker for aesthetic dermatology forums",
+      "Published protocols for pigment-safe laser planning",
+      "Awarded for patient experience and ethical aesthetic care",
+    ],
+    timeline: [
+      { year: "2008", detail: "Medical dermatology residency and research in pigment disorders." },
+      { year: "2012", detail: "Laser fellowship with focus on Indian skin safety." },
+      { year: "2017", detail: "Integrated facial aesthetics, hair and smile design into practice." },
+      { year: "2024", detail: "Launched DermaDent’s luxury medical atelier concept." },
+    ],
+  },
+  {
+    name: "Dr. Amrendra Kumar",
+    title: "BOT AND MOT(ORTHOPAEDIC)",
+    portrait: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=1200&q=85",
+    signature: "Amrendra Kumar",
+    biography:
+      "Dr. Amrendra Kumar specializes in Physical Therapy and Rehabilitation, bringing extensive expertise in orthopaedic care. He focuses on comprehensive patient recovery and long-term physical well-being through customized therapeutic protocols.",
+    credentials: [
+      "BOT AND MOT(ORTHOPAEDIC)",
+      "National Institute for Orthopaedically Handicapped (NILD), Kolkata",
+      "Specialist in Physical Therapy and Rehabilitation",
+    ],
+    achievements: [
+      "Expertise in advanced orthopaedic rehabilitation",
+      "Dedicated to restoring mobility and enhancing quality of life",
+    ],
+    timeline: [
+      { year: "Present", detail: "Leading Physical Therapy and Rehabilitation at DermaDent Aesthetics." },
+    ],
+  }
+];
 
 export const transformations = [
   {

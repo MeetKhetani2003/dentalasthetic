@@ -10,7 +10,7 @@ import {
 } from "@/db/schema";
 import {
   treatments as defaultTreatments,
-  doctor as defaultDoctor,
+  doctors as defaultDoctors,
   heroStats as defaultHeroStats,
   transformations as defaultTransformations,
   testimonials as defaultTestimonials,
@@ -32,11 +32,11 @@ export async function seedInitialData() {
       );
     }
 
-    // 2. Doctor
+    // 2. Doctors
     const doctorCount = await Doctor.countDocuments();
     if (doctorCount === 0) {
-      console.log("Seeding initial doctor data...");
-      await Doctor.create(defaultDoctor);
+      console.log("Seeding initial doctors data...");
+      await Doctor.insertMany(defaultDoctors);
     }
 
     // 3. Home Content
@@ -161,17 +161,17 @@ export async function getHomeContent() {
   };
 }
 
-export async function getDoctor() {
+export async function getDoctors() {
   try {
     await connectDB();
-    const data = await Doctor.findOne().lean();
-    if (data) {
+    const data = await Doctor.find().lean();
+    if (data && data.length > 0) {
       return JSON.parse(JSON.stringify(data));
     }
   } catch (e) {
-    console.error("Failed to fetch doctor from DB:", e);
+    console.error("Failed to fetch doctors from DB:", e);
   }
-  return defaultDoctor;
+  return defaultDoctors;
 }
 
 export async function getTreatments(): Promise<TreatmentType[]> {
