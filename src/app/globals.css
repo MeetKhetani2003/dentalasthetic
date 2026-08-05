@@ -453,6 +453,66 @@ main { isolation: isolate; }
   width: 100%;
 }
 
+.carousel-layout {
+  display: flex;
+  overflow-x: auto;
+  gap: 2rem;
+  padding-bottom: 2rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) rgba(0,0,0,0.05);
+}
+.carousel-layout > * {
+  flex: 0 0 auto;
+  width: min(85vw, 400px);
+  scroll-snap-align: start;
+}
+.carousel-layout::-webkit-scrollbar { height: 4px; }
+.carousel-layout::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
+.carousel-layout::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+}
+.carousel-button {
+  position: absolute;
+  top: calc(50% - 1rem);
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1px solid var(--line);
+  color: var(--teal-deep);
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+.carousel-button:hover {
+  background: var(--teal-deep);
+  color: var(--gold);
+  transform: translateY(-50%) scale(1.05);
+}
+.carousel-button--prev {
+  left: -1.75rem;
+}
+.carousel-button--next {
+  right: -1.75rem;
+}
+@media (max-width: 1024px) {
+  .carousel-button {
+    display: none;
+  }
+}
+
+
 .card {
   background: var(--white);
   border: 1px solid var(--line);

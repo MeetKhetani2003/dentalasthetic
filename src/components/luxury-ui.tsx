@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { useRef } from "react";
 import { awards, clinic as defaultClinic, navLinks, treatments as defaultTreatments, Treatment as TreatmentType } from "@/lib/dermadent-data";
 
 export function Eyebrow({ children }: { children: ReactNode }) {
@@ -38,22 +39,46 @@ export function SplitImageComposition({
 export function TreatmentRibbon({ treatments, limit }: { treatments?: TreatmentType[]; limit?: number }) {
   const list = treatments && treatments.length > 0 ? treatments : defaultTreatments;
   const visibleTreatments = typeof limit === "number" ? list.slice(0, limit) : list;
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = window.innerWidth > 768 ? 400 : 320;
+      scrollRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   return (
-    <div className="grid-layout">
-      {visibleTreatments.map((treatment) => (
-        <Link
-          href={`/treatments/${treatment.slug}`}
-          className="card"
-          key={treatment.slug}
-          data-reveal
-        >
-          <img src={treatment.image} alt={treatment.title} />
-          <span className="eyebrow">{treatment.eyebrow}</span>
-          <h3>{treatment.shortTitle}</h3>
-          <p>{treatment.description}</p>
-        </Link>
-      ))}
+    <div className="carousel-container">
+      <button 
+        onClick={() => scroll('left')}
+        className="carousel-button carousel-button--prev"
+        aria-label="Previous treatments"
+      >
+        ←
+      </button>
+      <div className="carousel-layout" ref={scrollRef}>
+        {visibleTreatments.map((treatment) => (
+          <Link
+            href={`/treatments/${treatment.slug}`}
+            className="card"
+            key={treatment.slug}
+            data-reveal
+          >
+            <img src={treatment.image} alt={treatment.title} />
+            <span className="eyebrow">{treatment.eyebrow}</span>
+            <h3>{treatment.shortTitle}</h3>
+            <p>{treatment.description}</p>
+          </Link>
+        ))}
+      </div>
+      <button 
+        onClick={() => scroll('right')}
+        className="carousel-button carousel-button--next"
+        aria-label="Next treatments"
+      >
+        →
+      </button>
     </div>
   );
 }

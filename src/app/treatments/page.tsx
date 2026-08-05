@@ -12,6 +12,17 @@ export const metadata: Metadata = {
 export default async function TreatmentsPage() {
   const treatments = await getTreatments();
 
+  const neuroTreatments = treatments.filter(t => t.eyebrow.toLowerCase().includes('neuro'));
+  const orthoTreatments = treatments.filter(t => t.eyebrow.toLowerCase().includes('ortho'));
+  const childTreatments = treatments.filter(t => t.eyebrow.toLowerCase().includes('paediatric') || t.eyebrow.toLowerCase().includes('child'));
+  
+  const skinTreatments = treatments.filter(t => 
+    !t.eyebrow.toLowerCase().includes('neuro') &&
+    !t.eyebrow.toLowerCase().includes('ortho') &&
+    !t.eyebrow.toLowerCase().includes('paediatric') &&
+    !t.eyebrow.toLowerCase().includes('child')
+  );
+
   return (
     <main>
       <section className="page-hero page-hero--treatments">
@@ -39,7 +50,33 @@ export default async function TreatmentsPage() {
       </section>
 
       <section className="treatments-catalogue section-pad">
-        <TreatmentRibbon treatments={treatments} />
+        {neuroTreatments.length > 0 && (
+          <div style={{ marginBottom: "6rem" }}>
+            <h2 data-reveal style={{ marginBottom: "3rem", fontSize: "clamp(2rem, 4vw, 3rem)" }}>Neuro Therapy</h2>
+            <TreatmentRibbon treatments={neuroTreatments} />
+          </div>
+        )}
+        
+        {orthoTreatments.length > 0 && (
+          <div style={{ marginBottom: "6rem" }}>
+            <h2 data-reveal style={{ marginBottom: "3rem", fontSize: "clamp(2rem, 4vw, 3rem)" }}>Orthopaedic Rehab</h2>
+            <TreatmentRibbon treatments={orthoTreatments} />
+          </div>
+        )}
+        
+        {childTreatments.length > 0 && (
+          <div style={{ marginBottom: "6rem" }}>
+            <h2 data-reveal style={{ marginBottom: "3rem", fontSize: "clamp(2rem, 4vw, 3rem)" }}>Child Therapy</h2>
+            <TreatmentRibbon treatments={childTreatments} />
+          </div>
+        )}
+        
+        {skinTreatments.length > 0 && (
+          <div>
+            <h2 data-reveal style={{ marginBottom: "3rem", fontSize: "clamp(2rem, 4vw, 3rem)" }}>Skin & Dental Aesthetics</h2>
+            <TreatmentRibbon treatments={skinTreatments} />
+          </div>
+        )}
       </section>
 
       <section className="treatment-index section-pad" aria-label="Treatment quick index">
